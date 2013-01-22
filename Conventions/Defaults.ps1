@@ -1,5 +1,6 @@
 $conventions = @{}
 $conventions.framework = "4.0x64"
+$conventions.buildMode = "Release"
 $conventions.buildPath = "$rootDir\build"
 $conventions.packagePath = "$($conventions.buildPath)\package"
 $conventions.solutionFile = (Resolve-Path $rootDir\*.sln)
