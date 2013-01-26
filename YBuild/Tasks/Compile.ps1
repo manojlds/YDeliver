@@ -18,5 +18,5 @@ function global:Version-AssemblyInfoFiles($version) {
 task Compile {
     $buildMode, $buildPath, $solutionFile = Get-Conventions buildMode, buildPath, solutionFile
     Version-AssemblyInfoFiles $buildVersion
-    Exec { msbuild $slnFile /p:OutputPath=$buildPath /p:Configuration=$buildMode /verbosity:minimal /nologo } "Build Failed - Compilation"
+    Exec { msbuild $solutionFile /p:OutputPath=$buildPath /p:Configuration=$buildMode /verbosity:minimal /nologo } "Build Failed - Compilation"
 }
