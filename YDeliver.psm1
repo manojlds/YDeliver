@@ -13,7 +13,10 @@ function Invoke-YBuild {
         [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd)
 
     $global:rootDir = $rootDir
+    $global:yDir = $PSScriptRoot
     . "$PSScriptRoot\Conventions\Defaults.ps1"
+
+    $buildConfig = Get-BuildConfiguration $rootDir
 
     Invoke-Psake "$PSScriptRoot\YBuild\Build.Tasks.ps1" `
         -nologo `
@@ -21,8 +24,10 @@ function Invoke-YBuild {
         -taskList $tasks `
         -parameters @{
             "buildVersion" = $buildVersion;
-            "buildConfig" =  (Get-BuildConfiguration $rootDir); 
+            "buildConfig" = $buildConfig;
             "conventions" = $conventions;
             "rootDir" = $rootDir;
-          }
+    }
+
+    if(-not $psake.build_success) { throw "YBuild failed!" }
 }

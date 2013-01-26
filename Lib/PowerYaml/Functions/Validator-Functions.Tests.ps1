@@ -1,17 +1,15 @@
-$pwd = Split-Path -Parent $MyInvocation.MyCommand.Path
+$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests", "")
-. "$pwd\$sut"
+. "$here\$sut"
 
 Describe "Detect-Tab" {
 
     It "should return the line number the first TAB character is found on" {
         $lines = @()
-        $lines += "valide: yaml"
         $lines += "   `t    "
-        $line_number_tab_is_in = 2
 
         $result = Detect-Tab $lines
-        $result.should.be($line_number_tab_is_in)
+        $result.should.be(1)
     }
 
     It "should return 0 if no TAB character is found in text" {
@@ -36,13 +34,10 @@ Describe "Validate-File" {
 }
 
 Describe "Validating a file with tabs" {
-
+    
     Setup -File "bad.yml" "     `t   "
 
-    It "should return false" {
-        Trap [Exception] {
-            Write-Host caught error
-        }
+    It "should return false and display what line the TAB occured on" {
         $result = Validate-File "$TestDrive\bad.yml"
         $result.should.be($false)
     }
