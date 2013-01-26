@@ -16,6 +16,7 @@ function Invoke-YBuild {
     . "$PSScriptRoot\Conventions\Defaults.ps1"
 
     Invoke-Psake "$PSScriptRoot\YBuild\Build.Tasks.ps1" `
+        -nologo `
         -framework $conventions.framework `
         -taskList $tasks `
         -parameters @{
