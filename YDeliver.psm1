@@ -10,7 +10,16 @@ function Invoke-YBuild {
     param(
         [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
         [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
-        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd)
+        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
+        )
+
+    $buildFile = "$PSScriptRoot\YBuild\Build.Tasks.ps1"
+
+    if($listTasks){
+        Get-AvailableTasks $buildFile -Full
+        return
+    }
 
     $global:rootDir = $rootDir
     $global:yDir = $PSScriptRoot
@@ -18,7 +27,7 @@ function Invoke-YBuild {
 
     $buildConfig = Get-BuildConfiguration $rootDir
 
-    Invoke-Psake "$PSScriptRoot\YBuild\Build.Tasks.ps1" `
+    Invoke-Psake $buildFile `
         -nologo `
         -framework $conventions.framework `
         -taskList $tasks `
@@ -31,3 +40,9 @@ function Invoke-YBuild {
 
     if(-not $psake.build_success) { throw "YBuild failed!" }
 }
+
+function Get-AvailableTasks($buildFile){
+    Invoke-Psake $buildFile -docs -nologo
+}
+
+Export-ModuleMember -function Invoke-YBuild
