@@ -1,94 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Ydeliver by manojlds</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Ydeliver by manojlds</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Ydeliver</h1>
-        <h2>A .Net focused build and deployment framework</h2>
-        <a href="https://github.com/manojlds/YDeliver" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Ydeliver</h1>
+        <p class="header">A .Net focused build and deployment framework</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>YDeliver</h1>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/manojlds/YDeliver/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/manojlds/YDeliver/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/manojlds/YDeliver">View On GitHub</a></li>
+        </ul>
 
-<p>Why not? :-) </p>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/manojlds">manojlds</a></p>
 
-<p>This cheeky titled framework is an opinionated build and deployment framework for .Net projects.</p>
 
-<h2>YDeliver is not</h2>
+      </header>
+      <section>
+        <h1>YDeliver</h1>
 
-<p>A replacement for good application agnostic builds like rake. </p>
+<p>YDeliver is a (opinionated) build and deployment framework aimed at .NET projects.</p>
 
-<h2>How do I get this to work?</h2>
+<p>YDeliver is based on Powershell and the amazing psake framework. It borrows the best practices ( Ydeliver strongly belived in convention over configuration) and tricks from across the industry, with the aim of quickly bootstrapping the build and release process of typical .NET projects. </p>
 
-<p>Open a PowerShell prompt in the TestProject folder and invoke the build!
-<code></code></p>
+<h2>Getting Started</h2>
 
-<blockquote>
-<p>.\build.bat
-</p>
-</blockquote>
+<p>You can include YDeliver as submodule within your project (recommended), or just have it as a Powershell module in your machine to invoke builds off.</p>
 
-<h2>More to come!</h2>
+<div class="highlight"><pre><span class="nb">Import-Module</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">YDeliver</span>
+</pre></div>
 
-<ul>
-<li>More information on the rationale behind some of the crazy decisions</li>
-<li>More Unit Test frameworks supports</li>
-<li>Deployment stuff added</li>
-</ul><h2>VM for TestProject</h2>
+<h2>YBuild</h2>
 
-<ul>
-<li>Windows 2008 R2 Web Server</li>
-<li>Set Administrator password to Password2112</li>
-<li>Install VirtualBox Guest Additions</li>
-</ul><h2>Ideas</h2>
+<p>YBuild is the build component of YDeliver. Typically, this component is for compiling, unit testing and packaging your artifacts. YBuild comes with prebuilt tasks to clean and compile your solution, run NUnit tests and package ( zip / nuget) up your artifacts.</p>
 
-<ul>
-<li>Plugin architecture</li>
-<li>NUnit execution changes between versions</li>
-<li>generate configuration yaml explicitly showing defaults and documentation</li>
-<li>simplify augmenting conventions (unit test path and tools path are good examples)</li>
-<li>how to get started with YDeliver</li>
-<li>Naming { build, install</li>
-</ul>
-        </section>
+<p>For example, you can run the clean, compile and package tasks by doing </p>
 
-        <aside id="sidebar">
-          <a href="https://github.com/manojlds/YDeliver/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/manojlds/YDeliver/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<div class="highlight"><pre><span class="nb">Invoke-YBuild</span> <span class="n">Clean</span><span class="p">,</span><span class="n">Compile</span><span class="p">,</span><span class="n">Project</span>
+</pre></div>
 
-          <p class="repo-owner"><a href="https://github.com/manojlds/YDeliver"></a> is maintained by <a href="https://github.com/manojlds">manojlds</a>.</p>
+<p>To get a list of available tasks, you can do:</p>
 
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+<div class="highlight"><pre><span class="nb">Invoke-YBuild</span> <span class="n">-listAvailable</span>
+</pre></div>
+
+<h2>Conventions</h2>
+
+<p>YDeliver follows certain conventions, like where to pick up the solution file, how to recognize unit test dlls, etc. These conventions are specified under <code>Conventions\Defaults.ps1</code></p>
+
+<h2>Configuration</h2>
+
+<p>You can specify configurations like which folders to package into artifacts, which projects to make nuget packages out off etc.</p>
+
+<h3>build.yml</h3>
+
+<p>Specifies the configurations for YBuild</p>
+
+<p><code>copyContents</code> : For specifying files and folders to be copied from one place to another
+<code>packageContents</code> : For specifying file and folders to be packages into zip files
+<code>nugetSpecs</code> : For specifying the .nuspec files to be used to build nuget packages</p>
+
+<p>Sample build.yml:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">copyContents</span><span class="p-Indicator">:</span>
+    <span class="s">"$buildPath/cmd.dll"</span><span class="p-Indicator">:</span>   <span class="s">"$buildPath/Cmd"</span>
+    <span class="s">"$buildPath/cmd.pdb"</span><span class="p-Indicator">:</span>   <span class="s">"$buildPath/Cmd"</span>
+    <span class="s">"$buildPath/test"</span><span class="p-Indicator">:</span>      <span class="s">"$buildPath/Cmd"</span>
+
+<span class="l-Scalar-Plain">packageContents</span><span class="p-Indicator">:</span>
+    <span class="s">"$buildPath/Cmd"</span><span class="p-Indicator">:</span>  <span class="s">"Cmd.zip"</span>
+
+<span class="l-Scalar-Plain">nugetSpecs</span><span class="p-Indicator">:</span>   <span class="p-Indicator">[</span><span class="nv">cmd.nuspec</span><span class="p-Indicator">]</span>
+</pre></div>
+
+<h2>What's ahead?</h2>
+
+<p>Lots more documentation.
+Bringing in the deploy component.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
-
-  
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
   </body>
 </html>
