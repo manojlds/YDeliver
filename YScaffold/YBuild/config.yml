@@ -1,2 +1,3 @@
 Files:
     "build.yml":    "$rootDir"
+    "build.ps1":    "$rootDir"
