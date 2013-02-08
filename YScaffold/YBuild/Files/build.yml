@@ -1,0 +1,16 @@
+copyContents:
+    #used to copy files or folders to certain locations prior to package
+    #source folder or file:  destination folder
+    #can use conventions $buildPath, $rootDir here
+    # "$buildPath/project.dll":   "$buildPath/project"
+    # "$buildPath/project.pdb":   "$buildPath/project"
+    # "$buildPath/test":      "$buildPath/project"
+
+packageContents:
+    #used to speicfy what is to be packaged and the package names
+    #source folder or file: package name
+    # "$buildPath/project":  "project.zip"
+
+nugetSpecs:     #[project.nuspec]
+    #used to specify the nuspecs to create packages out of
+    #will recursiveley search the project directory to find the specified files
