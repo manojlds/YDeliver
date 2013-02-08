@@ -57,6 +57,17 @@ packageContents:
 nugetSpecs:   [cmd.nuspec]
 ```
 
+## YScaffold
+
+This component helps you to quickly bootstrap a project's build and deploy. You can scaffold the files and scripts that are used by the different YDeliver component.
+
+Currently, you can scaffold YBuild.
+
+```powershell
+Invoke-YScaffold -Component YBuild
+```
+YScaffold will not replace files that already exist.
+
 ## What's ahead?
 
 Lots more documentation.
