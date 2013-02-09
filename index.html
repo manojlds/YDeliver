@@ -86,16 +86,49 @@
 <span class="l-Scalar-Plain">nugetSpecs</span><span class="p-Indicator">:</span>   <span class="p-Indicator">[</span><span class="nv">cmd.nuspec</span><span class="p-Indicator">]</span>
 </pre></div>
 
+<h2>YFlow</h2>
+
+<p>YFlow is the developer workflow component. During the course of development, the developers would be running specific task at specific times. For example, you may want to run the <code>dbdeploy</code> task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run <code>dbdeploy</code>, you <em>also</em> want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).</p>
+
+<p>If you are not using workflows, you may have to do:</p>
+
+<div class="highlight"><pre><span class="nb">Invoke-YBuild</span> <span class="n">dbdeploy</span>
+<span class="nb">Invoke-YInstall</span> <span class="n">solr</span>
+</pre></div>
+
+<p>With <code>YFlow</code>, you can define these as your <code>workflows</code>. Scaffold the component to get <code>workflow.ps1</code> and <code>workflows.yml</code>.</p>
+
+<div class="highlight"><pre><span class="nb">Invoke-YScaffold</span> <span class="n">YFlow</span>
+</pre></div>
+
+<p><code>workflow.yml</code> for the above scenario will look like this:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">workflow</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">dbsolr</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">ybuild</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">dbdeploy</span><span class="p-Indicator">]</span>
+        <span class="l-Scalar-Plain">yinstall</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">solr</span><span class="p-Indicator">]</span>
+</pre></div>
+
+<p>Now, you can do:</p>
+
+<div class="highlight"><pre><span class="nb">Invoke-YFlow</span> <span class="n">dbsolr</span> <span class="c">#or</span>
+<span class="p">.\</span><span class="n">workflow</span><span class="p">.</span><span class="n">ps1</span> <span class="n">dbsolr</span>
+</pre></div>
+
+<p>You can merge the functionalities of <code>build.ps1</code> and <code>workflow.ps1</code> as appropriate.</p>
+
+<p>Note that <code>YDeliver</code> doesn't encourage dependencies between task as specified using psake syntax. We believe it is better being explicit. <code>YFlow</code> may be the replacement for this.</p>
+
 <h2>YScaffold</h2>
 
 <p>This component helps you to quickly bootstrap a project's build and deploy. You can scaffold the files and scripts that are used by the different YDeliver component.</p>
 
-<p>Currently, you can scaffold YBuild.</p>
+<p>Currently, you can scaffold YBuild and YFlow.</p>
 
 <div class="highlight"><pre><span class="nb">Invoke-YScaffold</span> <span class="n">-Component</span> <span class="n">YBuild</span>
 </pre></div>
 
-<p>YScaffold will not replace files that already exist.</p>
+<p>YScaffold will not replace files that already exist unless called with the <code>-Force</code> switch.</p>
 
 <h2>What's ahead?</h2>
 
