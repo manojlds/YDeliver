@@ -56,17 +56,53 @@ packageContents:
 
 nugetSpecs:   [cmd.nuspec]
 ```
+##YFlow
+
+YFlow is the developer workflow component. During the course of development, the developers would be running specific task at specific times. For example, you may want to run the `dbdeploy` task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run `dbdeploy`, you *also* want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).
+
+If you are not using workflows, you may have to do:
+
+```powershell
+Invoke-YBuild dbdeploy
+Invoke-YInstall solr
+```
+
+With `YFlow`, you can define these as your `workflows`. Scaffold the component to get `workflow.ps1` and `workflows.yml`.
+
+```powershell
+Invoke-YScaffold YFlow
+```
+
+`workflow.yml` for the above scenario will look like this:
+
+```yml
+workflow:
+    dbsolr:
+        ybuild: [dbdeploy]
+        yinstall: [solr]
+```
+
+Now, you can do:
+
+```powershell
+Invoke-YFlow dbsolr #or
+.\workflow.ps1 dbsolr
+```
+
+You can merge the functionalities of `build.ps1` and `workflow.ps1` as appropriate.
+
+Note that `YDeliver` doesn't encourage dependencies between task as specified using psake syntax. We believe it is better being explicit. `YFlow` may be the replacement for this.
 
 ## YScaffold
 
 This component helps you to quickly bootstrap a project's build and deploy. You can scaffold the files and scripts that are used by the different YDeliver component.
 
-Currently, you can scaffold YBuild.
+Currently, you can scaffold YBuild and YFlow.
 
 ```powershell
 Invoke-YScaffold -Component YBuild
 ```
-YScaffold will not replace files that already exist.
+YScaffold will not replace files that already exist unless called with the `-Force` switch.
 
 ## What's ahead?
 
