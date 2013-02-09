@@ -1,0 +1,3 @@
+workflow:
+    default:
+        ybuild: [Clean, Compile, UnitTests, Package]

@@ -1,0 +1,3 @@
+Files:
+    "workflows.yml":    "$rootDir"
+    "workflow.ps1":    "$rootDir"

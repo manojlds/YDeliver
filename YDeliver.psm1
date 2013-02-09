@@ -43,11 +43,40 @@ function Invoke-YBuild {
     if(-not $psake.build_success) { throw "YBuild failed!" }
 }
 
+function Invoke-YFlow {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = 0)][string] $name = "default", 
+        [Parameter(Position = 1, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 2, Mandatory = 0)][switch] $listFlows,
+        [Parameter(ParameterSetName = 'YBuild', Position = 3)][string] $buildVersion = "1.0.0"
+        )
+
+    $config = Get-Configuration $rootDir workflows
+    $workflows = $config.workflow
+
+    if($listFlows){
+        return Out-WorkFlows $workflows
+    }
+
+    if(-not $workflows[$name]){
+        throw "The workflow $name is not defined in your configuration"
+    }
+
+    $ybuildTasks = $workflows.$name.ybuild
+
+    if($ybuildTasks){
+        Invoke-YBuild $ybuildTasks $buildVersion
+    }
+
+}
+
 function Invoke-YScaffold {
     [CmdletBinding()]
     param(
         [Parameter(Position = 0, Mandatory = 1)][string] $component, 
-        [Parameter(Position = 1, Mandatory = 0)][string] $rootDir = $pwd
+        [Parameter(Position = 1, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 2, Mandatory = 0)][switch] $force
         )
 
     $componentPath = "$PSScriptRoot\YScaffold\$component"
@@ -63,7 +92,7 @@ function Invoke-YScaffold {
         $file = Split-Path $_.Name -Leaf
         $source = Join-Path "$componentPath\Files" $_.Name
         $destination = Join-Path (Expand-String $_.Value) $file
-        Install-ScaffoldFile $source $destination 
+        Install-ScaffoldFile $source $destination -force:$force
     }
 }
 
@@ -71,13 +100,22 @@ function Get-AvailableTasks($buildFile){
     Invoke-Psake $buildFile -docs -nologo
 }
 
-function Install-ScaffoldFile($source, $destination) {
-    if(Test-Path $destination -PathType Leaf){
+function Out-WorkFlows($workflows){
+    $workflows.keys
+}
+
+function Install-ScaffoldFile($source, $destination, $force) {
+    if((-not $force) -and (Test-Path $destination -PathType Leaf)){
         return "Exists $destination"
     }
 
-    Copy-Item $source -Destination $destination
-    "Create $destination"
+    Copy-Item $source -Destination $destination -force:$force
+    "{0} $destination" -f (?: $force "Replace" "Create")
 }
 
-Export-ModuleMember -function Invoke-YBuild, Invoke-YScaffold
+function ?:([bool]$condition, $first, $second){
+    if($condition){ return $first}
+    $second
+}
+
+Export-ModuleMember -function Invoke-YBuild, Invoke-YFlow, Invoke-YScaffold
