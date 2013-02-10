@@ -58,7 +58,7 @@ nugetSpecs:   [cmd.nuspec]
 ```
 ##YFlow
 
-YFlow is the developer workflow component. During the course of development, the developers would be running specific task at specific times. For example, you may want to run the `dbdeploy` task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run `dbdeploy`, you *also* want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).
+YFlow is the developer workflow component. During the course of development, the developers would be running specific tasks at specific times. For example, you may want to run the `dbdeploy` task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run `dbdeploy`, you *also* want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).
 
 If you are not using workflows, you may have to do:
 
