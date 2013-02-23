@@ -43,6 +43,11 @@
 <div class="highlight"><pre><span class="nb">Import-Module</span> <span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">YDeliver</span>
 </pre></div>
 
+<p>You can also install YDeliver as a solution-level package using Nuget / Package manager:</p>
+
+<div class="highlight"><pre><span class="n">Install-Package</span> <span class="n">ydeliver</span>
+</pre></div>
+
 <h2>YBuild</h2>
 
 <p>YBuild is the build component of YDeliver. Typically, this component is for compiling, unit testing and packaging your artifacts. YBuild comes with prebuilt tasks to clean and compile your solution, run NUnit tests and package ( zip / nuget) up your artifacts.</p>
@@ -88,7 +93,7 @@
 
 <h2>YFlow</h2>
 
-<p>YFlow is the developer workflow component. During the course of development, the developers would be running specific task at specific times. For example, you may want to run the <code>dbdeploy</code> task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run <code>dbdeploy</code>, you <em>also</em> want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).</p>
+<p>YFlow is the developer workflow component. During the course of development, the developers would be running specific tasks at specific times. For example, you may want to run the <code>dbdeploy</code> task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run <code>dbdeploy</code>, you <em>also</em> want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).</p>
 
 <p>If you are not using workflows, you may have to do:</p>
 
@@ -140,6 +145,16 @@ Bringing in the deploy component.</p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-38743463-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
