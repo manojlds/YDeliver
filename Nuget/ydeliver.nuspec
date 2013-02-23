@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ydeliver</id>
+    <version>0.1.0</version>
+    <authors>manojlds</authors>
+    <owners>manojlds</owners>
+    <licenseUrl>https://github.com/manojlds/YDeliver</licenseUrl>
+    <projectUrl>http://ydeliver.stacktoheap.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>YDeliver is a (opinionated) build and deployment framework aimed at .NET projects.</description>
+    <tags>ydeliver build deploy release continuous-delivery</tags>
+  </metadata>
+</package>

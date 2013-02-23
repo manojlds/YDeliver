@@ -1,0 +1,14 @@
+copyContents:
+    "$rootDir/CommonFunctions":     "$buildPath/tools"
+    "$rootDir/Conventions":     "$buildPath/tools"
+    "$rootDir/Lib":     "$buildPath/tools"
+    "$rootDir/YBuild":     "$buildPath/tools"
+    "$rootDir/YScaffold":     "$buildPath/tools"
+    "$rootDir/YScaffold":     "$buildPath/tools"
+    "$rootDir/YDeliver.psm1":     "$buildPath/tools"
+packageContents:
+    #used to speicfy what is to be packaged and the package names
+    #source folder or file: package name
+    # "$buildPath/project":  "project.zip"
+
+nugetSpecs:     [ydeliver.nuspec]

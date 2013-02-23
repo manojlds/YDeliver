@@ -12,6 +12,13 @@ You can include YDeliver as submodule within your project (recommended), or just
 Import-Module path\to\YDeliver
 ```
 
+You can also install YDeliver as a solution-level package using Nuget / Package manager:
+
+```powershell
+Install-Package ydeliver
+```
+
+
 ## YBuild
 
 YBuild is the build component of YDeliver. Typically, this component is for compiling, unit testing and packaging your artifacts. YBuild comes with prebuilt tasks to clean and compile your solution, run NUnit tests and package ( zip / nuget) up your artifacts.
