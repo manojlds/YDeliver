@@ -7,7 +7,7 @@ copyContents:
     # "$buildPath/test":      "$buildPath/project"
 
 packageContents:
-    #used to speicfy what is to be packaged and the package names
+    #used to specify what is to be packaged and the package names
     #source folder or file: package name
     # "$buildPath/project":  "project.zip"
 
