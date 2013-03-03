@@ -42,7 +42,7 @@ You can specify your own, or modify the ones provided by the framework by adding
 ```yml
 conventions:
     framework:  "3.5x86"
-    solutionFile:   "$rootDir\name.sln"
+    solutionFile:   "$rootDir/name.sln"
 ```
 
 ## Configuration
