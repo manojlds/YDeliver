@@ -3,7 +3,7 @@ copyContents:
     "$rootDir/Conventions":     "$buildPath/tools"
     "$rootDir/Lib":     "$buildPath/tools"
     "$rootDir/YBuild":     "$buildPath/tools"
-    "$rootDir/YScaffold":     "$buildPath/tools"
+    "$rootDir/YInstall":     "$buildPath/tools"
     "$rootDir/YScaffold":     "$buildPath/tools"
     "$rootDir/YDeliver.psm1":     "$buildPath/tools"
 
