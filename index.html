@@ -62,6 +62,29 @@
 <div class="highlight"><pre><span class="nb">Invoke-YBuild</span> <span class="n">-listAvailable</span>
 </pre></div>
 
+<h2>YInstall</h2>
+
+<p>YInstall component takes care of "installing" the build artifacts - be it zip files, installers, nuget packages etc.</p>
+
+<p>You can install "applications". These can be certain modules within your project - like a service, web app etc or the entire project itself. Each applications is defined to be of certain tasks and the configurations needed to install them. For example:</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">conventions</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">artifactsDir</span><span class="p-Indicator">:</span> <span class="s">"$rootDir/build"</span>
+
+<span class="l-Scalar-Plain">install</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">ydeliver</span><span class="p-Indicator">:</span> 
+        <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="s">"NugetPublish"</span><span class="p-Indicator">]</span>
+        <span class="l-Scalar-Plain">config</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">packages</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="s">"ydeliver.*.nupkg"</span><span class="p-Indicator">]</span>
+            <span class="l-Scalar-Plain">source</span><span class="p-Indicator">:</span> <span class="s">"NuGet</span><span class="nv"> </span><span class="s">official</span><span class="nv"> </span><span class="s">package</span><span class="nv"> </span><span class="s">source"</span>
+</pre></div>
+
+<p>The above configuration in a <code>install.yml</code> defines an application <code>ydeliver</code>. When you install this application, the task <code>NugetPublish</code> is run. The <code>config</code> section defines the configuration needed to run the tasks. Here the nuget packages and the nuget feed source are specified.</p>
+
+<h2>YDeploy</h2>
+
+<p>Coming soon.</p>
+
 <h2>Conventions</h2>
 
 <p>YDeliver follows certain conventions, like where to pick up the solution file, how to recognize unit test dlls, etc. These conventions are specified under <code>Conventions\Defaults.ps1</code></p>
@@ -140,8 +163,6 @@
 <h2>YScaffold</h2>
 
 <p>This component helps you to quickly bootstrap a project's build and deploy. You can scaffold the files and scripts that are used by the different YDeliver component.</p>
-
-<p>Currently, you can scaffold YBuild and YFlow.</p>
 
 <div class="highlight"><pre><span class="nb">Invoke-YScaffold</span> <span class="n">-Component</span> <span class="n">YBuild</span>
 </pre></div>
