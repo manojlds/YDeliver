@@ -3,6 +3,7 @@ Set-StrictMode -Version 2.0
 
 Import-Module "$PSScriptRoot\Lib\psake\psake.psm1" -Force
 Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
+. "$PSScriptRoot\CommonFunctions\Merge-Hash.ps1"
 . "$PSScriptRoot\CommonFunctions\Get-Configuration.ps1"
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
 . "$PSScriptRoot\CommonFunctions\Write-ColouredOutput.ps1"
@@ -25,9 +26,9 @@ function Invoke-YBuild {
 
     $global:rootDir = $rootDir
     $global:yDir = $PSScriptRoot
-    . "$PSScriptRoot\Conventions\Defaults.ps1"
 
     $buildConfig = Get-BuildConfiguration $rootDir
+    . "$PSScriptRoot\Conventions\Defaults.ps1" $buildConfig["conventions"]
 
     Invoke-Psake $buildFile `
         -nologo `

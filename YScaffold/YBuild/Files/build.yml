@@ -1,3 +1,8 @@
+conventions:
+    #used to override the conventions specified in Conventions\Defaults.ps1
+    #convention key: value
+    #framework: "3.5x64"
+
 copyContents:
     #used to copy files or folders to certain locations prior to package
     #source folder or file:  destination folder
