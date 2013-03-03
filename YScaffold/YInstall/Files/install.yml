@@ -1,4 +1,15 @@
 conventions:
     #used to override the conventions specified in Conventions\Defaults.ps1
     #convention key: value
-    #artifactsDir: "packages"
+    artifactsDir: "$rootDir/build"
+
+install:
+    #specify applications here
+    ydeliver: 
+        #tasks needed to install the application
+        tasks: ["NugetPublish"]
+        config:
+            #configuration needed to install the application
+            packages: ["ydeliver.*.nupkg"]
+            #source can be local directory path or nuget feed url or nuget source name
+            source: "NuGet official package source"

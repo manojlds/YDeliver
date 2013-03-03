@@ -2,7 +2,7 @@ task NugetPackage {
     $buildPath, $libPath, $buildMode = Get-Conventions buildPath, libPath, buildMode
     $nuget = "$libPath\Nuget\Nuget.exe"
 
-    $buildConfig["nugetSpecs"] | %{
+    $config["nugetSpecs"] | %{
         $project = Get-ChildItem "$rootDir\$_" -recurse
 
         Exec { 

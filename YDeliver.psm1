@@ -8,7 +8,7 @@ Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
 . "$PSScriptRoot\CommonFunctions\Write-ColouredOutput.ps1"
 
-function Invoke-Component($action, $extraParameters) {
+function Invoke-Component($action, $config, $extraParameters) {
     $buildFile = "$PSScriptRoot\Y{0}\{0}.Tasks.ps1" -f $action
 
     if($listTasks){
@@ -19,11 +19,11 @@ function Invoke-Component($action, $extraParameters) {
     $global:rootDir = $rootDir
     $global:yDir = $PSScriptRoot
 
-    $buildConfig = Get-Configuration $rootDir $action
-    . "$PSScriptRoot\Conventions\Defaults.ps1" $buildConfig["conventions"]
+    
+    . "$PSScriptRoot\Conventions\Defaults.ps1" $config["conventions"]
 
     $parameters = @{
-        "buildConfig" = $buildConfig;
+        "config" = $config;
         "conventions" = $conventions;
         "buildVersion" = $buildVersion;
         "rootDir" = $rootDir;
@@ -52,20 +52,26 @@ function Invoke-YBuild {
         )
 
     $action = "Build"
-    Invoke-Component $action
+    $config = Get-BuildConfiguration $rootDir
+    Invoke-Component $action $config
 }
 
 function Invoke-YInstall {
     [CmdletBinding()]
     param(
-        [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
+        [Parameter(Position = 0, Mandatory = 1)][string[]] $applications, 
         [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
         [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
         [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
         )
 
     $action = "Install"
-    Invoke-Component $action
+    $applications | %{
+        Write-ColouredOutput "Installing application $_" yellow
+        $config = Get-InstallConfiguration $rootDir $_
+        $tasks = $config.tasks
+        Invoke-Component $action $config.applicationConfig
+    }
 }
 
 function Invoke-YFlow {

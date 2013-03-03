@@ -1,2 +1,3 @@
 Files:
     "install.yml":    "$rootDir"
+    "install.ps1":    "$rootDir"

@@ -5,10 +5,10 @@ function Write-PackageHelp {
 task Package {
     $buildPath = Get-Conventions buildPath
 
-    if ($buildConfig.copyContents.keys) {
-        ($buildConfig.copyContents).keys | %{
+    if ($config.copyContents.keys) {
+        ($config.copyContents).keys | %{
             $source = Resolve-PathExpanded $_
-            $destination = Expand-String $buildConfig.copyContents[$_]
+            $destination = Expand-String $config.copyContents[$_]
             "Copying $source to $destination"
             
             if(!(Test-Path $destination)){
@@ -17,10 +17,10 @@ task Package {
             Copy-PackageItem $source $destination
         }
     }
-    if ($buildConfig.packageContents.keys) {
-        ($buildConfig.packageContents).keys | %{
+    if ($config.packageContents.keys) {
+        ($config.packageContents).keys | %{
             $source = Resolve-PathExpanded $_
-            Write-Zip $source $buildPath $buildConfig.packageContents[$_]
+            Write-Zip $source $buildPath $config.packageContents[$_]
         }
     }
     
