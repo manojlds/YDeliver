@@ -33,6 +33,30 @@ To get a list of available tasks, you can do:
 Invoke-YBuild -listAvailable
 ```
 
+## YInstall
+
+YInstall component takes care of "installing" the build artifacts - be it zip files, installers, nuget packages etc.
+
+You can install "applications". These can be certain modules within your project - like a service, web app etc or the entire project itself. Each applications is defined to be of certain tasks and the configurations needed to install them. For example:
+
+```yml
+conventions:
+    artifactsDir: "$rootDir/build"
+
+install:
+    ydeliver: 
+        tasks: ["NugetPublish"]
+        config:
+            packages: ["ydeliver.*.nupkg"]
+            source: "NuGet official package source"
+```
+
+The above configuration in a `install.yml` defines an application `ydeliver`. When you install this application, the task `NugetPublish` is run. The `config` section defines the configuration needed to run the tasks. Here the nuget packages and the nuget feed source are specified.
+
+## YDeploy
+
+Coming soon.
+
 ## Conventions
 
 YDeliver follows certain conventions, like where to pick up the solution file, how to recognize unit test dlls, etc. These conventions are specified under `Conventions\Defaults.ps1`
@@ -116,8 +140,6 @@ Note that `YDeliver` doesn't encourage dependencies between task as specified us
 ## YScaffold
 
 This component helps you to quickly bootstrap a project's build and deploy. You can scaffold the files and scripts that are used by the different YDeliver component.
-
-Currently, you can scaffold YBuild and YFlow.
 
 ```powershell
 Invoke-YScaffold -Component YBuild
