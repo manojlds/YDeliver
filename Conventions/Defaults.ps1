@@ -9,7 +9,7 @@ $conventions.libPath = "$yDir\Lib"
 $conventions.unitTestPathPattern = "*UnitTests"
 
 if($conventionOverrides){
-    $conventions = Merge-Hash $conventions $conventionOverrides
+    $conventions = Merge-Hash $conventions (Expand-Hash $conventionOverrides)
 }
 
 "Conventions being used:" 

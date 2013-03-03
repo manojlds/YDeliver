@@ -1,3 +1,27 @@
+function Expand-String([string] $s){
+    $ExecutionContext.InvokeCommand.ExpandString($s)
+}
+
+function Expand-Hash([Hashtable] $hash){
+    if($hash -eq $null){
+        return $hash
+    }
+
+    $output = @{}
+
+    foreach($key in $hash.keys) {
+        if($hash["$key"] -is [Hashtable]){
+            $output["$key"] = Expand-Hash $hash["$key"]
+        } elseif($hash["$key"] -is [string]){
+            $output["$key"] = Expand-String $hash["$key"]
+        } else {
+            $output["$key"] = $hash["$key"]
+        }
+    }
+
+    return $output
+}
+
 function Merge-Hash($base, $new) {
     if ($new -eq $null) { return $base.Clone() }
     if ($base -eq $null) { return $new.Clone() }
@@ -13,7 +37,7 @@ function Merge-Hash($base, $new) {
                 if ($base[$key] -is [String]){
                     $base[$key] = $new[$key]
                 } else {
-                $base[$key] = Merge-Hash $base[$key].Clone() $new[$key].Clone()
+                    $base[$key] = Merge-Hash $base[$key].Clone() $new[$key].Clone()
                 }
             }
         } else {
