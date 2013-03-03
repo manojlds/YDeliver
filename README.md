@@ -45,6 +45,12 @@ conventions:
     solutionFile:   "$rootDir/name.sln"
 ```
 
+## Custom Tasks
+
+If you cannot add your own task directly into the component's task folder ( either because you are using YDeliver as a Nuget package and don't want to touch the installed files, or if your are using YDeliver as a submodule), you can add a file in your project root named `<action>.custom.tasks.ps1` and the tasks from it will be picked up as well.
+
+For example, if you want to add custom tasks for YBuild, create a file named `build.custom.tasks.ps1` and place it in the root of your project. These task will now be available from `Invoke-YBuild`.
+
 ## Configuration
 
 You can specify configurations like which folders to package into artifacts, which projects to make nuget packages out off etc.
