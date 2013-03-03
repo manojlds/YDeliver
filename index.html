@@ -66,6 +66,13 @@
 
 <p>YDeliver follows certain conventions, like where to pick up the solution file, how to recognize unit test dlls, etc. These conventions are specified under <code>Conventions\Defaults.ps1</code></p>
 
+<p>You can specify your own, or modify the ones provided by the framework by adding the conventions key in the component config ( like build.yml):</p>
+
+<div class="highlight"><pre><span class="l-Scalar-Plain">conventions</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">framework</span><span class="p-Indicator">:</span>  <span class="s">"3.5x86"</span>
+    <span class="l-Scalar-Plain">solutionFile</span><span class="p-Indicator">:</span>   <span class="s">"$rootDir/name.sln"</span>
+</pre></div>
+
 <h2>Configuration</h2>
 
 <p>You can specify configurations like which folders to package into artifacts, which projects to make nuget packages out off etc.</p>
