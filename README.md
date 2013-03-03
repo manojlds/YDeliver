@@ -37,6 +37,14 @@ Invoke-YBuild -listAvailable
 
 YDeliver follows certain conventions, like where to pick up the solution file, how to recognize unit test dlls, etc. These conventions are specified under `Conventions\Defaults.ps1`
 
+You can specify your own, or modify the ones provided by the framework by adding the conventions key in the component config ( like build.yml):
+
+```yml
+conventions:
+    framework:  "3.5x86"
+    solutionFile:   "$rootDir\name.sln"
+```
+
 ## Configuration
 
 You can specify configurations like which folders to package into artifacts, which projects to make nuget packages out off etc.
