@@ -1,0 +1,4 @@
+conventions:
+    #used to override the conventions specified in Conventions\Defaults.ps1
+    #convention key: value
+    #artifactsDir: "packages"
