@@ -8,6 +8,8 @@ $conventions.solutionFile = (Resolve-Path $rootDir\src\*.sln, $rootDir\source\*.
 $conventions.libPath = "$yDir\Lib"
 $conventions.unitTestPathPattern = "*UnitTests"
 
+$conventions.artifactsDir = "$rootDir\artifacts"
+
 if($conventionOverrides){
     $conventions = Merge-Hash $conventions (Expand-Hash $conventionOverrides)
 }

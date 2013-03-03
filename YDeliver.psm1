@@ -8,16 +8,8 @@ Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
 . "$PSScriptRoot\CommonFunctions\Write-ColouredOutput.ps1"
 
-function Invoke-YBuild {
-    [CmdletBinding()]
-    param(
-        [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
-        [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
-        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
-        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
-        )
-
-    $buildFile = "$PSScriptRoot\YBuild\Build.Tasks.ps1"
+function Invoke-Component($action, $extraParameters) {
+    $buildFile = "$PSScriptRoot\Y{0}\{0}.Tasks.ps1" -f $action
 
     if($listTasks){
         Get-AvailableTasks $buildFile -Full
@@ -27,21 +19,53 @@ function Invoke-YBuild {
     $global:rootDir = $rootDir
     $global:yDir = $PSScriptRoot
 
-    $buildConfig = Get-BuildConfiguration $rootDir
+    $buildConfig = Get-Configuration $rootDir $action
     . "$PSScriptRoot\Conventions\Defaults.ps1" $buildConfig["conventions"]
+
+    $parameters = @{
+        "buildConfig" = $buildConfig;
+        "conventions" = $conventions;
+        "buildVersion" = $buildVersion;
+        "rootDir" = $rootDir;
+    }
+
+    if($extraParameters){
+        $parameters = Merge-Hash $parameters $extraParameters
+    }
 
     Invoke-Psake $buildFile `
         -nologo `
         -framework $conventions.framework `
         -taskList $tasks `
-        -parameters @{
-            "buildVersion" = $buildVersion;
-            "buildConfig" = $buildConfig;
-            "conventions" = $conventions;
-            "rootDir" = $rootDir;
-    }
+        -parameters $parameters
 
-    if(-not $psake.build_success) { throw "YBuild failed!" }
+    if(-not $psake.build_success) { throw "Y{0} failed!" -f $action }
+}
+
+function Invoke-YBuild {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
+        [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
+        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
+        )
+
+    $action = "Build"
+    Invoke-Component $action
+}
+
+function Invoke-YInstall {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
+        [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
+        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
+        )
+
+    $action = "Install"
+    Invoke-Component $action
 }
 
 function Invoke-YFlow {
@@ -119,4 +143,4 @@ function ?:([bool]$condition, $first, $second){
     $second
 }
 
-Export-ModuleMember -function Invoke-YBuild, Invoke-YFlow, Invoke-YScaffold
+Export-ModuleMember -function Invoke-YBuild, Invoke-YInstall, Invoke-YFlow, Invoke-YScaffold
