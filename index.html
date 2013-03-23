@@ -62,6 +62,8 @@
 <div class="highlight"><pre><span class="nb">Invoke-YBuild</span> <span class="n">-listAvailable</span>
 </pre></div>
 
+<p>You can override the <code>build.yml</code> settings by adding a <code>-config</code> parameter to <code>Invoke-YBuild</code>. See scaffolded <code>build.ps1</code> for example.</p>
+
 <h2>YInstall</h2>
 
 <p>YInstall component takes care of "installing" the build artifacts - be it zip files, installers, nuget packages etc.</p>
@@ -80,6 +82,8 @@
 </pre></div>
 
 <p>The above configuration in a <code>install.yml</code> defines an application <code>ydeliver</code>. When you install this application, the task <code>NugetPublish</code> is run. The <code>config</code> section defines the configuration needed to run the tasks. Here the nuget packages and the nuget feed source are specified.</p>
+
+<p>You can override the <code>install.yml</code> settings by adding a <code>-config</code> parameter to <code>Invoke-YInstall</code>. See scaffolded <code>install.ps1</code> for example.</p>
 
 <h2>YDeploy</h2>
 
