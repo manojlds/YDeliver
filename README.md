@@ -33,6 +33,8 @@ To get a list of available tasks, you can do:
 Invoke-YBuild -listAvailable
 ```
 
+You can override the `build.yml` settings by adding a `-config` parameter to `Invoke-YBuild`. See scaffolded `build.ps1` for example.
+
 ## YInstall
 
 YInstall component takes care of "installing" the build artifacts - be it zip files, installers, nuget packages etc.
@@ -52,6 +54,8 @@ install:
 ```
 
 The above configuration in a `install.yml` defines an application `ydeliver`. When you install this application, the task `NugetPublish` is run. The `config` section defines the configuration needed to run the tasks. Here the nuget packages and the nuget feed source are specified.
+
+You can override the `install.yml` settings by adding a `-config` parameter to `Invoke-YInstall`. See scaffolded `install.ps1` for example.
 
 ## YDeploy
 

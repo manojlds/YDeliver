@@ -48,11 +48,12 @@ function Invoke-YBuild {
         [Parameter(Position = 0, Mandatory = 0)][string[]] $tasks = @('Help'), 
         [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
         [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
-        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
+        [Parameter(Position = 3, Mandatory = 0)][Hashtable] $config,
+        [Parameter(Position = 4, Mandatory = 0)][switch] $listTasks
         )
 
     $action = "Build"
-    $config = Get-BuildConfiguration $rootDir
+    $config = Get-BuildConfiguration $rootDir $config
     Invoke-Component $action $config
 }
 
@@ -62,13 +63,14 @@ function Invoke-YInstall {
         [Parameter(Position = 0, Mandatory = 1)][string[]] $applications, 
         [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
         [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
-        [Parameter(Position = 3, Mandatory = 0)][switch] $listTasks
+        [Parameter(Position = 3, Mandatory = 0)][Hashtable] $config,
+        [Parameter(Position = 4, Mandatory = 0)][switch] $listTasks
         )
 
     $action = "Install"
     $applications | %{
         Write-ColouredOutput "Installing application $_" yellow
-        $config = Get-InstallConfiguration $rootDir $_
+        $config = Get-InstallConfiguration $rootDir $_ $config
         $tasks = $config.tasks
         Invoke-Component $action $config.applicationConfig
     }
