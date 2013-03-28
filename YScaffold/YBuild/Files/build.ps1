@@ -1,7 +1,7 @@
 param(
     $tasks = @('Clean', 'Compile', 'UnitTests', 'Package'), 
     $buildNumber = "1.0.0",
-    $buildMode = "Release",
+    $buildMode = "Release"
     )
 
 $script:scriptDir = split-path $MyInvocation.MyCommand.Path -parent
