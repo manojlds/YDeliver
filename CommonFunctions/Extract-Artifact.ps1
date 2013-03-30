@@ -1,4 +1,4 @@
-function Extract-Artifact($source, $destination) {
+function Extract-Artifact($source, $destination, $spliceMap) {
     if(-not (Test-Path $source)){
         throw "Artifact $source not found"
     }
@@ -9,4 +9,13 @@ function Extract-Artifact($source, $destination) {
         Expand-Zip $source.FullName $destination
     }
 
+    if($spliceMap){
+        Splice-Artifact $destination $spliceMap
+    }
+}
+
+function Splice-Artifact($extractedArtifactPath, $spliceMap){
+    $spliceMap.keys | %{
+        Splice-XMLConfigFile "$extractedArtifactPath\$_" $spliceMap[$_]
+    }
 }

@@ -34,3 +34,7 @@ function Get-InstallConfiguration($path, $application, $config) {
 function Get-InstallTaskConfiguration(){
     $config.taskConfigs["$($currentContext.currentTaskName)"].config
 }
+
+function Get-InstallTaskSpliceMap(){
+    $config.taskConfigs["$($currentContext.currentTaskName)"].spliceMap
+}
