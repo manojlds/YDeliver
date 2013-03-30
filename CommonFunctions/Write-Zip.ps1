@@ -6,3 +6,15 @@ function Write-Zip($source, $destination, $packageName){
     
     iex $zipCommand | out-null
 }
+
+function Expand-Zip($source, $destination) {
+    $libPath = Get-Conventions libPath
+    $7z = "$libPath\7z\7za.exe"
+
+    Remove-Item $destination -Recurse -ErrorAction silentlycontinue
+
+    "Unzipping $source to $destination"
+
+    $destination = "-o" + $destination 
+    &$7z x -y $source $destination | out-null
+}

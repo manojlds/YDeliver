@@ -3,6 +3,7 @@ Set-StrictMode -Version 2.0
 
 Import-Module "$PSScriptRoot\Lib\psake\psake.psm1" -Force
 Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
+
 . "$PSScriptRoot\CommonFunctions\Merge-Hash.ps1"
 . "$PSScriptRoot\CommonFunctions\Get-Configuration.ps1"
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
@@ -15,12 +16,6 @@ function Invoke-Component($action, $config, $extraParameters) {
         Get-AvailableTasks $buildFile -Full
         return
     }
-
-    $global:rootDir = $rootDir
-    $global:yDir = $PSScriptRoot
-
-    
-    . "$PSScriptRoot\Conventions\Defaults.ps1" $config["conventions"]
 
     $parameters = @{
         "config" = $config;
@@ -52,8 +47,12 @@ function Invoke-YBuild {
         [Parameter(Position = 4, Mandatory = 0)][switch] $listTasks
         )
 
+    $global:rootDir = $rootDir
+    $global:yDir = $PSScriptRoot
+
     $action = "Build"
     $config = Get-BuildConfiguration $rootDir $config
+    . "$PSScriptRoot\Conventions\Defaults.ps1" $config["conventions"]
     Invoke-Component $action $config
 }
 
@@ -67,12 +66,17 @@ function Invoke-YInstall {
         [Parameter(Position = 4, Mandatory = 0)][switch] $listTasks
         )
 
+    $global:rootDir = $rootDir
+    $global:yDir = $PSScriptRoot
+
     $action = "Install"
+    
     $applications | %{
         Write-ColouredOutput "Installing application $_" yellow
         $config = Get-InstallConfiguration $rootDir $_ $config
+        . "$PSScriptRoot\Conventions\Defaults.ps1" $config["conventions"]
         $tasks = $config.tasks
-        Invoke-Component $action $config.applicationConfig
+        Invoke-Component $action $config
     }
 }
 

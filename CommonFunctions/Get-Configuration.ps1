@@ -21,10 +21,16 @@ function Get-BuildConfiguration($path, $config) {
 function Get-InstallConfiguration($path, $application, $config) {
     $installConfig = Get-Configuration $path install $config
     $applicationConfig = $installConfig.install.$application
-    $applicationConfig.config["conventions"] = $installConfig["conventions"]
+
     $config = @{
-        "tasks" = $applicationConfig.tasks;
-        "applicationConfig" = $applicationConfig.config;
+        "conventions" = $installConfig["conventions"];
+        "tasks" = $applicationConfig.tasks.keys;
+        "taskConfigs" = $applicationConfig.tasks;
     }
+
     $config
+}
+
+function Get-InstallTaskConfiguration(){
+    $config.taskConfigs["$($currentContext.currentTaskName.ToLower())"].config
 }
