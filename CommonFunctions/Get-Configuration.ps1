@@ -32,5 +32,5 @@ function Get-InstallConfiguration($path, $application, $config) {
 }
 
 function Get-InstallTaskConfiguration(){
-    $config.taskConfigs["$($currentContext.currentTaskName.ToLower())"].config
+    $config.taskConfigs["$($currentContext.currentTaskName)"].config
 }

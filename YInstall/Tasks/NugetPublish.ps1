@@ -1,17 +1,20 @@
 task NugetPublish {
+
+    $taskConfig = Get-InstallTaskConfiguration
     $artifactsDir = Get-Conventions artifactsDir
-    $config.packages | %{
+
+    $taskConfig.packages | %{
         $packagePaths = Resolve-Path "$artifactsDir\$_"
     }
-    if(Test-Path $config.source){
+    if(Test-Path $taskConfig.source){
         $packagePaths | %{
-            Write-ColouredOutput "Publishing package $_ to $($config.source)" yellow
-            Copy-Item $_ -destination $config.source
+            Write-ColouredOutput "Publishing package $_ to $($taskConfig.source)" yellow
+            Copy-Item $_ -destination $taskConfig.source
         }
     } else {
         $packagePaths | %{ 
-            Write-ColouredOutput "Publishing package $_ to $($config.source)" yellow
-            exec { nuget push $_ -source "$($config.source)" -noninteractive } "Nuget push failed."
+            Write-ColouredOutput "Publishing package $_ to $($taskConfig.source)" yellow
+            exec { nuget push $_ -source "$($taskConfig.source)" -noninteractive } "Nuget push failed."
         }
     }
 }
