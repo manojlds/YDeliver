@@ -47,10 +47,11 @@ conventions:
 
 install:
     ydeliver: 
-        tasks: ["NugetPublish"]
-        config:
-            packages: ["ydeliver.*.nupkg"]
-            source: "NuGet official package source"
+        tasks:
+            NugetPublish:
+                config:
+                    packages: ["ydeliver.*.nupkg"]
+                    source: "NuGet official package source"
 ```
 
 The above configuration in a `install.yml` defines an application `ydeliver`. When you install this application, the task `NugetPublish` is run. The `config` section defines the configuration needed to run the tasks. Here the nuget packages and the nuget feed source are specified.
@@ -104,7 +105,7 @@ packageContents:
 
 nugetSpecs:   [cmd.nuspec]
 ```
-##YFlow
+##YFlow (work in progress)
 
 YFlow is the developer workflow component. During the course of development, the developers would be running specific tasks at specific times. For example, you may want to run the `dbdeploy` task after updating some migrations. You may want to index solr after updating the config etc. Probably, when you run `dbdeploy`, you *also* want to reindex solr. Sometimes, these tasks may also cut across components ( YBuild, YInstall).
 
