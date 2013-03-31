@@ -80,6 +80,23 @@ function Invoke-YInstall {
     }
 }
 
+function Invoke-YDeploy {
+    [CmdletBinding()]
+    param(
+        [Parameter(Position = 0, Mandatory = 1)][string[]] $environment, 
+        [Parameter(Position = 1, Mandatory = 0)][string] $buildVersion = "1.0.0",
+        [Parameter(Position = 2, Mandatory = 0)][string] $rootDir = $pwd,
+        [Parameter(Position = 3, Mandatory = 0)][Hashtable] $config
+        )
+
+    $global:rootDir = $rootDir
+    $global:yDir = $PSScriptRoot
+
+    $action = "Deploy"
+    
+    
+}
+
 function Invoke-YFlow {
     [CmdletBinding()]
     param(
@@ -128,7 +145,13 @@ function Invoke-YScaffold {
     $config.Files.GetEnumerator() | %{ 
         $file = Split-Path $_.Name -Leaf
         $source = Join-Path "$componentPath\Files" $_.Name
-        $destination = Join-Path (Expand-String $_.Value) $file
+        $destinationDir = Expand-String $_.Value
+
+        if(-not (Test-Path $destinationDir -PathType Container)){
+            mkdir $destinationDir | Out-Null
+        }
+
+        $destination = Join-Path $destinationDir $file
         Install-ScaffoldFile $source $destination -force:$force
     }
 }
