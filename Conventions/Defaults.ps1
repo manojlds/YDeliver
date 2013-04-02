@@ -10,6 +10,8 @@ $conventions.unitTestPathPattern = "*UnitTests"
 
 $conventions.artifactsDir = "$rootDir\artifacts"
 
+$conventions.remoteYDeliverPath = "C:\YDeliver"
+
 if($conventionOverrides){
     $conventions = Merge-Hash $conventions (Expand-Hash $conventionOverrides)
 }

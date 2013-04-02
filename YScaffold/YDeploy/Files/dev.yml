@@ -1,0 +1,14 @@
+#common environment configuration
+config:
+
+
+roles:
+    #specify the roles that machines / servers can play in the environment
+    #web:
+        #specify the applications to be installed for the role. Same as applications from install.yml
+        #applications:
+            #ydeliver-mvc4:
+                #speciy the config for each application to be install
+                #config:
+        #specify the servers that play this role
+        #servers:        ["host"]

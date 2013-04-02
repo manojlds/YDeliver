@@ -1,2 +1,3 @@
 Files:
     "dev.yml":    "$rootDir\\EnvironmentConfigs"
+    "deploy.ps1":    "$rootDir"

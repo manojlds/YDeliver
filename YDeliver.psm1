@@ -8,6 +8,7 @@ Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
 . "$PSScriptRoot\CommonFunctions\Get-Configuration.ps1"
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
 . "$PSScriptRoot\CommonFunctions\Write-ColouredOutput.ps1"
+. "$PSScriptRoot\CommonFunctions\Invoke-RemoteDeploy.ps1"
 
 function Invoke-Component($action, $config, $extraParameters) {
     $buildFile = "$PSScriptRoot\Y{0}\{0}.Tasks.ps1" -f $action
@@ -92,9 +93,19 @@ function Invoke-YDeploy {
     $global:rootDir = $rootDir
     $global:yDir = $PSScriptRoot
 
-    $action = "Deploy"
-    
-    
+    . "$PSScriptRoot\Conventions\Defaults.ps1"
+    . "$PSScriptRoot\CommonFunctions\Get-Conventions.ps1"
+    . "$PSScriptRoot\CommonFunctions\Install-YDeliver.ps1"
+
+    $config = Get-EnvironmentConfig $environment $config
+
+    $config.roles.GetEnumerator() | %{
+        Write-ColouredOutput "Deploying for role $($_.Name)" yellow
+        $roleConfig = $_.Value
+        $roleConfig.servers | %{
+            Invoke-RemoteDeploy $_ $roleConfig
+        }
+    }
 }
 
 function Invoke-YFlow {
@@ -178,4 +189,4 @@ function ?:([bool]$condition, $first, $second){
     $second
 }
 
-Export-ModuleMember -function Invoke-YBuild, Invoke-YInstall, Invoke-YFlow, Invoke-YScaffold
+Export-ModuleMember -function Invoke-YBuild, Invoke-YInstall, Invoke-YDeploy, Invoke-YFlow, Invoke-YScaffold

@@ -5,7 +5,9 @@ function Get-Configuration {
 
     if (Test-Path "$path\$name.yml") {
         $config = Get-Yaml -FromFile "$path\$name.yml"
-      }
+    } elseif($overrideConfig) {
+        return $overrideConfig
+    }
     
     if($overrideConfig){
         return Merge-Hash $config $overrideConfig
@@ -37,4 +39,20 @@ function Get-InstallTaskConfiguration(){
 
 function Get-InstallTaskSpliceMap(){
     $config.taskConfigs["$($currentContext.currentTaskName)"].spliceMap
+}
+
+function Get-EnvironmentConfig($environment, $overrideConfig){
+    $configPath = Join-Path "$rootDir\EnvironmentConfigs" "$environment.yml"
+    if(-not (Test-Path $configPath -PathType Leaf)){
+        throw "Environment config not found at $configPath"
+    }
+
+    $config = Get-Yaml -FromFile $configPath
+
+    if($overrideConfig){
+        return Merge-Hash $config $overrideConfig
+    }
+
+    $config
+
 }
