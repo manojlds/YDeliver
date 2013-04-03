@@ -97,10 +97,12 @@ function Invoke-YDeploy {
     . "$PSScriptRoot\CommonFunctions\Install-YDeliver.ps1"
     . "$PSScriptRoot\CommonFunctions\Import-Scripts.ps1"
     . "$PSScriptRoot\CommonFunctions\Get-WebContent.ps1"
+    . "$PSScriptRoot\CommonFunctions\Get-PSCredential.ps1"
     . "$PSScriptRoot\CommonFunctions\Invoke-RemoteDeploy.ps1"
 
 
     $config = Get-EnvironmentConfig $environment $config
+    $config = Expand-Hash $config
 
     $config.roles.GetEnumerator() | %{
         Write-ColouredOutput "Deploying for role $($_.Name)" yellow

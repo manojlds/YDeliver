@@ -3,8 +3,12 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
     $remoteYDeliverPath = Get-Conventions remoteYDeliverPath
 
     "Deploying to $server"
-
-    $session = New-PSSession -ComputerName $server -authentication NegotiateWithImplicitCredential
+    if($roleConfig.credential){
+        $credential = Get-PSCredential $roleConfig.credential.username $roleConfig.credential.password 
+        $session = New-PSSession -ComputerName $server -authentication Default -credential $credential
+    } else {
+        $session = New-PSSession -ComputerName $server -authentication Default
+    }
 
     try{
 
