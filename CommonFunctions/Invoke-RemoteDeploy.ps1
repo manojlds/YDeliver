@@ -1,4 +1,4 @@
-function Invoke-RemoteDeploy($server, $roleConfig) {
+function Invoke-RemoteDeploy($server, $roleConfig, $version) {
     
     $remoteYDeliverPath = Get-Conventions remoteYDeliverPath
 
@@ -17,18 +17,40 @@ function Invoke-RemoteDeploy($server, $roleConfig) {
         $installConfig.conventions = @{ "artifactsDir" = $workingDir; }
     }
 
+    $importedScripts = Import-Scripts @("$yDir\CommonFunctions\Get-Artifacts.ps1", "$yDir\CommonFunctions\Get-WebContent.ps1")
+
+    $deployConfig = @{
+        "modulePath" = $modulePath;
+        "workingDir" = $workingDir;
+        "installConfig" = $installConfig;
+        "roleConfig" = $roleConfig;
+        "version" = $version;
+        "remoteYDeliverPath" = $remoteYDeliverPath;
+        "importedScripts" = $importedScripts;
+    };
+   
     "Using YDeliver from $modulePath"
 
     Invoke-Command -Session $session -Command {
-        param($modulePath, $workingDir, $installConfig, $roleConfig, $remoteYDeliverPath)
-        Import-Module "$modulePath\YDeliver.psm1"
-        mkdir $workingDir
-        Set-Location $workingDir
-        write-host $installConfig["conventions"]["artifactsDir"]
-        Invoke-YInstall -applications $roleConfig.applications.keys -config $installConfig
-        rm $workingDir -force
+        param($deployConfig)
 
-    } -ArgumentList @(, $modulePath, $workingDir, $installConfig, $roleConfig, $remoteYDeliverPath)
+        $importedScripts = $ExecutionContext.InvokeCommand.NewScriptBlock($deployConfig["importedScripts"])
+        . $importedScripts
+        
+        if(Test-Path $deployConfig["workingDir"] -PathType Container){
+            rm $deployConfig["workingDir"] -force
+        }
+        mkdir $deployConfig["workingDir"] | Out-Null
+        Set-Location $deployConfig["workingDir"]
+
+        Get-Artifacts $deployConfig["roleConfig"].artifacts $deployConfig["version"] $deployConfig["workingDir"]
+        
+        Import-Module "$($deployConfig["modulePath"])\YDeliver.psm1"
+        Invoke-YInstall -applications $deployConfig["roleConfig"].applications.keys -config $deployConfig["installConfig"]
+        
+        rm $deployConfig["workingDir"] -force
+
+    } -ArgumentList @(, $deployConfig)
 
     Remove-PSSession $session
 

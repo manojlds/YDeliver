@@ -8,7 +8,6 @@ Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
 . "$PSScriptRoot\CommonFunctions\Get-Configuration.ps1"
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
 . "$PSScriptRoot\CommonFunctions\Write-ColouredOutput.ps1"
-. "$PSScriptRoot\CommonFunctions\Invoke-RemoteDeploy.ps1"
 
 function Invoke-Component($action, $config, $extraParameters) {
     $buildFile = "$PSScriptRoot\Y{0}\{0}.Tasks.ps1" -f $action
@@ -96,6 +95,10 @@ function Invoke-YDeploy {
     . "$PSScriptRoot\Conventions\Defaults.ps1"
     . "$PSScriptRoot\CommonFunctions\Get-Conventions.ps1"
     . "$PSScriptRoot\CommonFunctions\Install-YDeliver.ps1"
+    . "$PSScriptRoot\CommonFunctions\Import-Scripts.ps1"
+    . "$PSScriptRoot\CommonFunctions\Get-WebContent.ps1"
+    . "$PSScriptRoot\CommonFunctions\Invoke-RemoteDeploy.ps1"
+
 
     $config = Get-EnvironmentConfig $environment $config
 
@@ -103,7 +106,7 @@ function Invoke-YDeploy {
         Write-ColouredOutput "Deploying for role $($_.Name)" yellow
         $roleConfig = $_.Value
         $roleConfig.servers | %{
-            Invoke-RemoteDeploy $_ $roleConfig
+            Invoke-RemoteDeploy $_ $roleConfig $buildVersion
         }
     }
 }
