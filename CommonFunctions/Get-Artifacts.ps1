@@ -2,7 +2,7 @@ function Get-Artifacts($artifactsConfig, $version, $destination){
     $artifactsConfig | %{
         $artifact = $_.keys[0]
         if($_[$artifact]."teamcity-build-id"){
-            Download-TeamCityArtifact $_[$artifact]."teamcity-build-id" $artifact $version $destination
+            Download-TeamCityArtifact $_[$artifact]."teamcity-build-id" $artifact $version "$destination\$artifact"
         }
     }
 }

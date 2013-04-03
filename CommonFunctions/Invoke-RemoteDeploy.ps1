@@ -4,7 +4,7 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
 
     "Deploying to $server"
 
-    $session = New-PSSession -ComputerName $server
+    $session = New-PSSession -ComputerName $server -authentication NegotiateWithImplicitCredential
 
     try{
 
@@ -50,7 +50,7 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
             Import-Module "$($deployConfig["modulePath"])\YDeliver.psm1"
             Invoke-YInstall -applications $deployConfig["roleConfig"].applications.keys -config $deployConfig["installConfig"]
             
-            rm $deployConfig["workingDir"] -force
+            rm $deployConfig["workingDir"] -force -ea silentlycontinue
 
         } -ArgumentList @(, $deployConfig)
     } finally {
