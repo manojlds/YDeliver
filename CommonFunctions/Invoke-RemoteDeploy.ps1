@@ -1,4 +1,4 @@
-function Invoke-RemoteDeploy($server, $roleConfig, $version) {
+function Invoke-RemoteDeploy($server, $roleConfig, $environmentConfig, $version) {
     
     $remoteYDeliverPath = Get-Conventions remoteYDeliverPath
 
@@ -33,6 +33,7 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
             "version" = $version;
             "remoteYDeliverPath" = $remoteYDeliverPath;
             "importedScripts" = $importedScripts;
+            "environmentConfig" = $environmentConfig;
         };
        
         "Using YDeliver from $modulePath"
@@ -49,7 +50,10 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
             mkdir $deployConfig["workingDir"] | Out-Null
             Set-Location $deployConfig["workingDir"]
 
-            Get-Artifacts $deployConfig["roleConfig"].artifacts $deployConfig["version"] $deployConfig["workingDir"]
+            Get-Artifacts -artifactsConfig $deployConfig["roleConfig"].artifacts `
+                          -version $deployConfig["version"] `
+                          -destination $deployConfig["workingDir"] `
+                          -environmentConfig $deployConfig["environmentConfig"]
             
             Import-Module "$($deployConfig["modulePath"])\YDeliver.psm1"
             Invoke-YInstall -applications $deployConfig["roleConfig"].applications.keys -config $deployConfig["installConfig"]

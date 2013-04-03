@@ -108,7 +108,7 @@ function Invoke-YDeploy {
         Write-ColouredOutput "Deploying for role $($_.Name)" yellow
         $roleConfig = $_.Value
         $roleConfig.servers | %{
-            Invoke-RemoteDeploy $_ $roleConfig $buildVersion
+            Invoke-RemoteDeploy $_ $roleConfig $config.config $buildVersion
         }
     }
 }
