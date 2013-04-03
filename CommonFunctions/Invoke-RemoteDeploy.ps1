@@ -40,7 +40,7 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
             . $importedScripts
             
             if(Test-Path $deployConfig["workingDir"] -PathType Container){
-                rm $deployConfig["workingDir"] -force
+                rm $deployConfig["workingDir"] -force -recurse
             }
             mkdir $deployConfig["workingDir"] | Out-Null
             Set-Location $deployConfig["workingDir"]
@@ -50,7 +50,7 @@ function Invoke-RemoteDeploy($server, $roleConfig, $version) {
             Import-Module "$($deployConfig["modulePath"])\YDeliver.psm1"
             Invoke-YInstall -applications $deployConfig["roleConfig"].applications.keys -config $deployConfig["installConfig"]
             
-            rm $deployConfig["workingDir"] -force -ea silentlycontinue
+            rm $deployConfig["workingDir"] -force -recurse -ea silentlycontinue
 
         } -ArgumentList @(, $deployConfig)
     } finally {
