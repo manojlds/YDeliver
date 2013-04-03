@@ -3,6 +3,8 @@ function Get-Artifacts($artifactsConfig, $version, $destination){
         $artifact = $_.keys[0]
         if($_[$artifact]."teamcity-build-id"){
             Download-TeamCityArtifact $_[$artifact]."teamcity-build-id" $artifact $version "$destination\$artifact"
+        } elseif($_[$artifact]."path"){
+            Copy-Item (Join-Path $_[$artifact]."path" $artifact) -destination $destination
         }
     }
 }
