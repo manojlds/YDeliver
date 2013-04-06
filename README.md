@@ -2,7 +2,7 @@
 
 YDeliver is a (opinionated) build and deployment framework aimed at .NET projects.
 
-YDeliver is based on Powershell and the amazing psake framework. It borrows the best practices ( Ydeliver strongly belived in convention over configuration) and tricks from across the industry, with the aim of quickly bootstrapping the build and release process of typical .NET projects. 
+YDeliver is based on Powershell and the amazing psake framework. It borrows the best practices ( for example, Ydeliver strongly believes in convention over configuration) and tricks from across the industry, with the aim of quickly bootstrapping the build and release process of typical .NET projects. 
 
 ## Getting Started
 
