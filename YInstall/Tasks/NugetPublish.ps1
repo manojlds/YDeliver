@@ -1,7 +1,9 @@
 task NugetPublish {
 
     $taskConfig = Get-InstallTaskConfiguration
-    $artifactsDir = Get-Conventions artifactsDir
+    $artifactsDir, $libPath = Get-Conventions artifactsDir, libPath
+
+    $nuget = "$libPath\Nuget\Nuget.exe"
 
     $taskConfig.packages | %{
         $packagePaths = Resolve-Path "$artifactsDir\$_"
@@ -14,7 +16,7 @@ task NugetPublish {
     } else {
         $packagePaths | %{ 
             Write-ColouredOutput "Publishing package $_ to $($taskConfig.source)" yellow
-            exec { nuget push $_ -source "$($taskConfig.source)" -noninteractive } "Nuget push failed."
+            exec { & $nuget push $_ -source "$($taskConfig.source)" -noninteractive } "Nuget push failed."
         }
     }
 }
