@@ -3,7 +3,7 @@ function Write-PackageHelp {
 }
 
 task Package {
-    $buildPath = Get-Conventions buildPath
+    $buildPath, $artifactsDir = Get-Conventions buildPath, artifactsDir
 
     if ($config.copyContents.keys) {
         ($config.copyContents).keys | %{
@@ -20,8 +20,7 @@ task Package {
     if ($config.packageContents.keys) {
         ($config.packageContents).keys | %{
             $source = Resolve-PathExpanded $_
-            Write-Zip $source $buildPath $config.packageContents[$_]
+            Write-Zip $source $artifactsDir $config.packageContents[$_]
         }
-    }
-    
+    }   
 }

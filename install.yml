@@ -1,6 +1,3 @@
-conventions:
-    artifactsDir: "$rootDir/build"
-
 install:
     ydeliver: 
         tasks:

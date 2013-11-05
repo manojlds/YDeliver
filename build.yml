@@ -7,4 +7,16 @@ copyContents:
     "$rootDir/YScaffold":     "$buildPath/tools"
     "$rootDir/YDeliver.psm1":     "$buildPath/tools"
 
+packageContents:
+    "$buildPath/tools/*": "YDeliver.zip"
+    "$rootDir/Scoop/scoopInstall.ps1": "YDeliver.zip"
+
+scoop:
+    manifest:
+        url: "http://localhost:8000/YDeliver.zip"
+        homepage: "http://ydeliver.stacktoheap.com"
+        installer: "scoopInstall.ps1"
+    package: "YDeliver.zip"
+
+
 nugetSpecs:     [ydeliver.nuspec]
