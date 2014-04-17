@@ -7,6 +7,7 @@ $conventions.buildPath = "$rootDir\build"
 $conventions.solutionFile = (Resolve-Path $rootDir\src\*.sln, $rootDir\source\*.sln -ea SilentlyContinue)
 $conventions.libPath = "$yDir\Lib"
 $conventions.unitTestPathPattern = "*UnitTests"
+$conventions.sourceFoldersFilter = "(\\lib\\?)|(\\packages\\?)"
 
 $conventions.artifactsDir = "$rootDir\artifacts"
 

@@ -1,9 +1,9 @@
-function global:Version-AssemblyInfoFiles($version) {
+function global:Version-AssemblyInfoFiles($version, $sourceFoldersFilter) {
 
     $newVersion = 'AssemblyVersion("' + $version + '")';
     $newFileVersion = 'AssemblyFileVersion("' + $version + '")';
 
-    Get-ChildItem $rootDir -Recurse | ? {$_.Name -eq "AssemblyInfo.cs"} | % {
+    Get-ChildItem $rootDir -Recurse -Filter "AssemblyInfo.cs" | ?{ $_.fullname -notmatch $sourceFoldersFilter } | % {
         $tmpFile = "$($_.FullName).tmp"
 
         gc $_.FullName |
@@ -16,7 +16,7 @@ function global:Version-AssemblyInfoFiles($version) {
 }
 
 task Compile {
-    $buildMode, $buildPath, $solutionFile = Get-Conventions buildMode, buildPath, solutionFile
-    Version-AssemblyInfoFiles $buildVersion
+    $buildMode, $buildPath, $solutionFile, $sourceFoldersFilter = Get-Conventions buildMode, buildPath, solutionFile, sourceFoldersFilter
+    Version-AssemblyInfoFiles $buildVersion $sourceFoldersFilter
     Exec { msbuild $solutionFile /p:OutputPath=$buildPath /p:Configuration=$buildMode /verbosity:minimal /nologo } "Build Failed - Compilation"
 }
