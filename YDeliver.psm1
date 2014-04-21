@@ -4,6 +4,7 @@ Set-StrictMode -Version 2.0
 Import-Module "$PSScriptRoot\Lib\psake\psake.psm1" -Force
 Import-Module "$PSScriptRoot\lib\PowerYaml\PowerYaml.psm1" -Force
 
+. "$PSScriptRoot\CommonFunctions\Apply-Values.ps1"
 . "$PSScriptRoot\CommonFunctions\Merge-Hash.ps1"
 . "$PSScriptRoot\CommonFunctions\Get-Configuration.ps1"
 . "$PSScriptRoot\CommonFunctions\Resolve-PathExpanded.ps1"
@@ -94,10 +95,13 @@ function Invoke-YDeploy {
 
     . "$PSScriptRoot\Conventions\Defaults.ps1"
     . "$PSScriptRoot\CommonFunctions\Get-Conventions.ps1"
+    . "$PSScriptRoot\CommonFunctions\Get-WebContent.ps1"
+    . "$PSScriptRoot\CommonFunctions\Get-Artifacts.ps1"
     . "$PSScriptRoot\CommonFunctions\Install-YDeliver.ps1"
     . "$PSScriptRoot\CommonFunctions\Import-Scripts.ps1"
     . "$PSScriptRoot\CommonFunctions\Get-WebContent.ps1"
     . "$PSScriptRoot\CommonFunctions\Get-PSCredential.ps1"
+    . "$PSScriptRoot\CommonFunctions\Invoke-LocalDeploy.ps1"
     . "$PSScriptRoot\CommonFunctions\Invoke-RemoteDeploy.ps1"
 
 
@@ -107,8 +111,14 @@ function Invoke-YDeploy {
     $config.roles.GetEnumerator() | %{
         Write-ColouredOutput "Deploying for role $($_.Name)" yellow
         $roleConfig = $_.Value
+
         $roleConfig.servers | %{
-            Invoke-RemoteDeploy $_ $roleConfig $config.config $buildVersion
+            if($_ -eq "localhost") {
+                Invoke-LocalDeploy $roleConfig $config
+            }
+            else {
+                Invoke-RemoteDeploy $_ $roleConfig $config.config $buildVersion
+            }
         }
     }
 }

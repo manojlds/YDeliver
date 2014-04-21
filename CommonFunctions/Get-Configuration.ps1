@@ -22,6 +22,7 @@ function Get-BuildConfiguration($path, $config) {
 
 function Get-InstallConfiguration($path, $application, $config) {
     $installConfig = Get-Configuration $path install $config
+    $installConfig = Apply-Values $installConfig $installConfig.values
     $applicationConfig = $installConfig.install.$application
 
     $config = @{
