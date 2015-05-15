@@ -5,6 +5,7 @@ task WindowsService{
     . Add-CarbonModule Security
     . Add-CarbonModule UsersAndGroups
     . Add-CarbonModule Service
+    . Add-CarbonModule Privileges
 
     $artifactsDir = Get-Conventions artifactsDir
     $taskConfig = Get-InstallTaskConfiguration
