@@ -22,12 +22,12 @@ function Apply-Values($config, $values) {
 function Apply-StringValue($thisValue, $values) {
     [regex]::matches($thisValue, "{{.*?}}") | select -expand value |%{
         $origKey = $_
-        $thisValue = Extract-Value-For $_ $values | %{ $thisValue -replace $origKey, $_ }
+        $thisValue = Extract-ValueFor $_ $values | %{ $thisValue -replace $origKey, $_ }
     }
     return $thisValue
 }
 
-function Extract-Value-For($key, $values){
+function Extract-ValueFor($key, $values){
     $valueKey = $key.Trim("{{}}")
     if($valueKey.Contains(".") -eq $true){
         $values_temp = $values.clone()
