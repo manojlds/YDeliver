@@ -22,8 +22,18 @@ function Apply-Values($config, $values) {
 function Apply-StringValue($thisValue, $values) {
     [regex]::matches($thisValue, "{{.*?}}") | select -expand value |%{
         $origKey = $_
-        $valueKey = $_.Trim("{{}}")
-        $thisValue = $values["$valueKey"] | %{ $thisValue -replace $origKey, $_ }
+        $thisValue = Extract-Value-For $_ $values | %{ $thisValue -replace $origKey, $_ }
     }
     return $thisValue
+}
+
+function Extract-Value-For($key, $values){
+    $valueKey = $key.Trim("{{}}")
+    if($valueKey.Contains(".") -eq $true){
+        $values_temp = $values.clone()
+        $valueKey.Split(".") | % { $values_temp  = $values_temp[$_] }
+        return $values_temp
+    } else {
+        return $values["$valueKey"]
+    }
 }
